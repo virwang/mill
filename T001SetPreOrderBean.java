@@ -16,21 +16,21 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
     public String StoreCode;  //經銷商ID
     public String StoreSite; //經銷點ID
     public String MaterialCode; //預購肥料代碼
-    public Float Package;       //重量(公斤/包)
+    public float Package=0;       //重量(公斤/包)
     public String PickupStatus;  //取貨狀態
-    public Float OrderTonnes;      //預購重量(頓)
+    public float OrderTonnes=0;      //預購重量(頓)
     public String ErrorMessage;  //錯誤訊息
 
     // Columns for merging PreOrder
     public String ReceiverPartnerCode;  //收貨人
     public String CreatedBy;            //訂單建立人
-    public Float PreOrderWeight;        //預購重量，合併後成為OrderTonnes
+    public float PreOrderWeight =0;        //預購重量，合併後成為OrderTonnes
     public Integer InStorePickUpQty;      //已取包裹數量
 
     public T001SetPreOrderBean() {
     }
 
-    public T001SetPreOrderBean(String no, Date applyDate, String storeCode, String storeSite, String materialCode, Float aPackage, String pickupStatus, Float orderTonnes, String errorMessage, String receiverPartnerCode, String createdBy, Float preOrderWeight, Integer inStorePickUpQty) {
+    public T001SetPreOrderBean(String no, Date applyDate, String storeCode, String storeSite, String materialCode, float aPackage, String pickupStatus, float orderTonnes, String errorMessage, String receiverPartnerCode, String createdBy, float preOrderWeight, Integer inStorePickUpQty) {
         No = no;
         ApplyDate = applyDate;
         StoreCode = storeCode;
@@ -65,7 +65,6 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
     public String getStoreCode() {
         return StoreCode;
     }
-
     public void setStoreCode(String storeCode) {
         StoreCode = storeCode;
     }
@@ -90,7 +89,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         return Package;
     }
 
-    public void setPackage(Float aPackage) {
+    public void setPackage(float aPackage) {
         Package = aPackage;
     }
 
@@ -106,7 +105,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         return OrderTonnes;
     }
 
-    public void setOrderTonnes(Float orderTonnes) {
+    public void setOrderTonnes(float orderTonnes) {
         OrderTonnes = orderTonnes;
     }
 
@@ -138,7 +137,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         return PreOrderWeight;
     }
 
-    public void setPreOrderWeight(Float preOrderWeight) {
+    public void setPreOrderWeight(float preOrderWeight) {
         PreOrderWeight = preOrderWeight;
     }
 
@@ -237,14 +236,10 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
                     try {
                         this.OrderTonnes = Float.valueOf(row.get(i));
                     } catch (NumberFormatException e) {
-
                         this.setErrorMessage("預購重量必須為數字");
-
                     }
                     break;
                 default:
-                    //row.add("");
-                    //this.setErrorMessage("欄位不能空白");
                     break;
             }
         }

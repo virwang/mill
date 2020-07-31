@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @SuppressWarnings("ALL")
-public class T001PreOrderExcelCheck {// extends HttpServlet {
+public class T001PreOrderExcelCheck {
     protected int maxColumnIndex = 26;
     protected int maxRowIndex = 2000;
     protected int maxSheetIndex = 1;
@@ -27,7 +27,6 @@ public class T001PreOrderExcelCheck {// extends HttpServlet {
     public static final String jndiDB = "java:/comp/env/jdbc/MyDB";
 
     public T001PreOrderExcelCheck(String uuid, HttpServletResponse response) {
-//        String uri = (String) request.getAttribute("javax.servlet.forward.request_uri");
         excelPath = excelPath + uuid + ".xlsx";
         myResponse = response;
         helper = new ExcelHelper(maxColumnIndex, maxRowIndex, maxSheetIndex, excelPath, myLog);
