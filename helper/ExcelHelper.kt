@@ -1,4 +1,4 @@
-package com.soetek.helper
+package com.helper
 
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Row
@@ -7,22 +7,21 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.slf4j.Logger
+//import org.slf4j.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 open class ExcelHelper {
-
     protected var maxColumnIndex : Int = 0
     protected var maxRowIndex : Int = 0
     protected var maxSheetIndex : Int = 0
     protected var excelPath : String = ""
-    protected var myLog : Logger? = null
+    //protected var myLog : Logger? = null
     protected var workbook: Workbook = XSSFWorkbook()
     public var book : MutableList<MutableList<MutableList<String>>> = mutableListOf()
-    public var bookFontColor : MutableList<MutableList<MutableList<String?>>> = mutableListOf()
+//    public var bookFontColor : MutableList<MutableList<MutableList<String?>>> = mutableListOf()
 
     open fun write(bookContent : MutableList<MutableList<MutableList<String>>>, outFilePath: String) {
         val wb = XSSFWorkbook()
@@ -60,7 +59,7 @@ open class ExcelHelper {
 
             val itRow: Iterator<Row> = currentSheet.iterator()
             var sheet : MutableList<MutableList<String>> = mutableListOf()
-            var sheetFontColor : MutableList<MutableList<String?>> = mutableListOf()
+//            var sheetFontColor : MutableList<MutableList<String?>> = mutableListOf()
 
             while (itRow.hasNext()) {
                 val nextRow = itRow.next()
@@ -71,15 +70,11 @@ open class ExcelHelper {
 
                 val itCell = nextRow.cellIterator()
                 var rowCurrent: MutableList<String> = mutableListOf()
-                var rowFontColor: MutableList<String?> = mutableListOf()
+//                var rowFontColor: MutableList<String?> = mutableListOf()
 
                 while (itCell.hasNext()) {
                     val cell = itCell.next()
 
-                    //檢查是否已經讀取所有欄位
-                    if (cell.rowIndex == 3) {
-                        val a = ""
-                    }
                     if (cell.columnIndex > this.maxColumnIndex) {
                         break
                     }
@@ -107,15 +102,15 @@ open class ExcelHelper {
                         }
                     }
 
-                    val style: XSSFCellStyle = cell.cellStyle as XSSFCellStyle
-                    val font = style.font
-                    rowFontColor.add(style.font.xssfColor?.argbHex)
+//                    val style: XSSFCellStyle = cell.cellStyle as XSSFCellStyle
+//                    val font = style.font
+//                    rowFontColor.add(style.font.xssfColor?.argbHex)
                 }
                 sheet.add(rowCurrent)
-                sheetFontColor.add(rowFontColor)
+//                sheetFontColor.add(rowFontColor)
             }
             book.add(sheet)
-            bookFontColor.add(sheetFontColor)
+//            bookFontColor.add(sheetFontColor)
         }
 
     }
@@ -129,12 +124,13 @@ open class ExcelHelper {
     constructor(maxColumnIndex: Int,
                 maxRowIndex: Int,
                 maxSheetIndex: Int,
-                excelPath: String,
-                myLog: Logger?) {
+                excelPath: String
+                //myLog: Logger?
+                ) {
         this.maxColumnIndex = maxColumnIndex
         this.maxRowIndex = maxRowIndex
         this.maxSheetIndex = maxSheetIndex
         this.excelPath = excelPath
-        this.myLog = myLog
+        //this.myLog = myLog
     }
 }

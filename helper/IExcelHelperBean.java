@@ -1,4 +1,5 @@
-package com.soetek.helper;
+package com.helper;
+
 import java.io.Serializable;
 import java.util.List;
 
