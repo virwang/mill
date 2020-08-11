@@ -338,7 +338,6 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
                     try {
 //                        LocalDateTime local = LocalDateTime.parse(row.get(i));
                         String date = row.get(i);
-//                        ZonedDateTime zone = ZonedDateTime.parse(date);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 //                        String time = formatter.format(local);
 //                        System.out.println(time);
@@ -346,8 +345,6 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
 //                        LocalDate localDate = LocalDate.parse(this.ApplyDate.format());
 //                        String day = local.format(formatter);
                         this.ApplyDate = LocalDate.parse(date,formatter);
-                        System.out.println(date);
-                        System.out.println(this.ApplyDate);
                     } catch (Exception e){
                         this.setErrorMessage("日期格式錯誤");
                     }
