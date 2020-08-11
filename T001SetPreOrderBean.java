@@ -1,49 +1,157 @@
 package com.soetek;
 
-import com.soetek.helper.IExcelHelperBean;
+import com.helper.IExcelHelperBean;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 
 public class T001SetPreOrderBean implements IExcelHelperBean {
 
     public String No;      //序號
-    public Date ApplyDate;   //申請日期
+    public LocalDateTime ApplyDate;   //申請日期
     public String StoreCode;  //經銷商ID
     public String StoreSite; //經銷點ID
     public String MaterialCode; //預購肥料代碼
-    public float Package=0;       //重量(公斤/包)
+    public float Package;       //重量(公斤/包)
     public String PickupStatus;  //取貨狀態
-    public float OrderTonnes=0;      //預購重量(頓)
+    public float Quantity;      //預購重量(頓)
+    public float AdjustmentQuantity; //已取貨重量(頓)
     public String ErrorMessage;  //錯誤訊息
 
-    // Columns for merging PreOrder
+    // Columns for merging & setting PreOrder
     public String ReceiverPartnerCode;  //收貨人
+    public String ReceiverPartnerName;  //收貨人
     public String CreatedBy;            //訂單建立人
-    public float PreOrderWeight =0;        //預購重量，合併後成為OrderTonnes
-    public Integer InStorePickUpQty;      //已取包裹數量
+//    public Integer InStorePickUpQty;      //已取包裹數量 錯誤
+    public String CustomerNo;
+    public String CustomerName;
+    public String MaterialName;
+    public String UnitCode;
+    public String UnitName;
+    public String Remark;
+    public String PlateNumber;
+    public float CarTonnes;
+    public int PreOrderStatusCode;
+    public int SourceCode;
+    public String CustomerType;
+    public String ProductID;   //Material Table 的 ProductID
+
+
 
     public T001SetPreOrderBean() {
+        this.Package = 0;
+        this.Quantity = 0;
+        this.AdjustmentQuantity = 0;
+        this.CarTonnes = 0;
+        this.PreOrderStatusCode = 0;
+        this.SourceCode = 0;
     }
 
-    public T001SetPreOrderBean(String no, Date applyDate, String storeCode, String storeSite, String materialCode, float aPackage, String pickupStatus, float orderTonnes, String errorMessage, String receiverPartnerCode, String createdBy, float preOrderWeight, Integer inStorePickUpQty) {
-        No = no;
-        ApplyDate = applyDate;
-        StoreCode = storeCode;
-        StoreSite = storeSite;
-        MaterialCode = materialCode;
-        Package = aPackage;
-        PickupStatus = pickupStatus;
-        OrderTonnes = orderTonnes;
-        ErrorMessage = errorMessage;
-        ReceiverPartnerCode = receiverPartnerCode;
-        CreatedBy = createdBy;
-        PreOrderWeight = preOrderWeight;
-        InStorePickUpQty = inStorePickUpQty;
+    public T001SetPreOrderBean(String no, LocalDateTime applyDate, String storeCode, String storeSite, String materialCode, float aPackage, String pickupStatus, float quantity, String errorMessage, String receiverPartnerCode, String createdBy, Integer inStorePickUpQty, String customerNo, String materialName, String unitCode, String unitName, String remark, String plateNumber, float carTonnes, int preOrderStatusCode, int sourceCode,String productID) {
+        this.No = no;
+        this.ApplyDate = applyDate;
+        this.StoreCode = storeCode;
+        this.StoreSite = storeSite;
+        this.MaterialCode = materialCode;
+        this.Package = aPackage;
+        this.PickupStatus = pickupStatus;
+        this.Quantity = quantity;
+        this.ErrorMessage = errorMessage;
+        this.ReceiverPartnerCode = receiverPartnerCode;
+        this.CreatedBy = createdBy;
+
+        this.CustomerNo = customerNo;
+        this.MaterialName = materialName;
+        this.UnitCode = unitCode;
+        this.UnitName = unitName;
+        this.Remark = remark;
+        this.PlateNumber = plateNumber;
+        this.CarTonnes = carTonnes;
+        this.PreOrderStatusCode = preOrderStatusCode;
+        this.SourceCode = sourceCode;
+        this.ProductID = productID;
+    }
+
+    public String getCustomerNo() {
+        return CustomerNo;
+    }
+
+    public void setCustomerNo(String customerNo) {
+        CustomerNo = customerNo;
+    }
+
+    public String getMaterialName() {
+        return MaterialName;
+    }
+
+    public void setMaterialName(String materialName) {
+        MaterialName = materialName;
+    }
+
+    public String getUnitCode() {
+        return UnitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        UnitCode = unitCode;
+    }
+
+    public String getUnitName() {
+        return UnitName;
+    }
+
+    public void setUnitName(String unitName) {
+        UnitName = unitName;
+    }
+
+    public String getRemark() {
+        return Remark;
+    }
+
+    public void setRemark(String remark) {
+        Remark = remark;
+    }
+
+    public String getPlateNumber() {
+        return PlateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        PlateNumber = plateNumber;
+    }
+
+    public float getCarTonnes() {
+        return CarTonnes;
+    }
+
+    public void setCarTonnes(float carTonnes) {
+        CarTonnes = carTonnes;
+    }
+
+    public int getPreOrderStatusCode() {
+        return PreOrderStatusCode;
+    }
+
+    public void setPreOrderStatusCode(int preOrderStatusCode) {
+        PreOrderStatusCode = preOrderStatusCode;
+    }
+
+    public int getSourceCode() {
+        return SourceCode;
+    }
+
+    public void setSourceCode(int sourceCode) {
+        SourceCode = sourceCode;
     }
 
     public String getNo() {
@@ -54,17 +162,18 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         No = no;
     }
 
-    public Date getApplyDate() {
+    public LocalDateTime getApplyDate() {
         return ApplyDate;
     }
 
-    public void setApplyDate(Date applyDate) {
+    public void setApplyDate(LocalDateTime applyDate) {
         ApplyDate = applyDate;
     }
 
     public String getStoreCode() {
         return StoreCode;
     }
+
     public void setStoreCode(String storeCode) {
         StoreCode = storeCode;
     }
@@ -85,7 +194,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         MaterialCode = materialCode;
     }
 
-    public Float getPackage() {
+    public float getPackage() {
         return Package;
     }
 
@@ -101,12 +210,12 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         PickupStatus = pickupStatus;
     }
 
-    public Float getOrderTonnes() {
-        return OrderTonnes;
+    public Float getQuantity() {
+        return Quantity;
     }
 
-    public void setOrderTonnes(float orderTonnes) {
-        OrderTonnes = orderTonnes;
+    public void setQuantity(float quantity) {
+        Quantity = quantity;
     }
 
     public String getErrorMessage() {
@@ -133,20 +242,44 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         CreatedBy = createdBy;
     }
 
-    public Float getPreOrderWeight() {
-        return PreOrderWeight;
+    public String getReceiverPartnerName() {
+        return ReceiverPartnerName;
     }
 
-    public void setPreOrderWeight(float preOrderWeight) {
-        PreOrderWeight = preOrderWeight;
+    public void setReceiverPartnerName(String receiverPartnerName) {
+        ReceiverPartnerName = receiverPartnerName;
     }
 
-    public Integer getInStorePickUpQty() {
-        return InStorePickUpQty;
+    public String getCustomerName() {
+        return CustomerName;
     }
 
-    public void setInStorePickUpQty(Integer inStorePickUpQty) {
-        InStorePickUpQty = inStorePickUpQty;
+    public void setCustomerName(String customerName) {
+        CustomerName = customerName;
+    }
+
+    public String getCustomerType() {
+        return CustomerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        CustomerType = customerType;
+    }
+
+    public float getAdjustmentQuantity() {
+        return AdjustmentQuantity;
+    }
+
+    public void setAdjustmentQuantity(float adjustmentQuantity) {
+        AdjustmentQuantity = adjustmentQuantity;
+    }
+
+    public String getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(String productID) {
+        ProductID = productID;
     }
 
     @Override
@@ -159,7 +292,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         result.add(this.MaterialCode);
         result.add(String.valueOf(this.Package));
         result.add(this.PickupStatus);
-        result.add(String.valueOf(this.OrderTonnes));
+        result.add(String.valueOf(this.Quantity));
         result.add(this.ErrorMessage);
         return result;
     }
@@ -171,22 +304,48 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         for (int i = 0; i < row.size(); i++) {
             switch (i) {
                 case 0:
+                    this.No = row.get(i);
                     if (row.get(i).isEmpty()) {
                         this.setErrorMessage("序號不得是空格");
                         break;
                     }
-                    this.No = row.get(i);
+                    if (this.No.endsWith(".0")){
+                       this.No = row.get(i).substring(0,this.No.length() - 2);
+                    }
                     break;
                 case 1:
-                    String date = "YYYY/MM/dd";
-                    DateFormat df = new SimpleDateFormat(date);
+//                    String str = "yyyy/MM/dd";
+//                    LocalDate local = this.ApplyDate;
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(str);
+
+//                   SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+//                   formatter.
+//                    LocalDate localDate = new LocalDate();
+//                    LocalDate localday = LocalDate.this.
+
+//                    LocalDate localDate = LocalDate.parse(str,formatter);
+
+//                    str = localDate.format(formatter);
+
+//                    Date date = Date.from();
+
                     if (row.get(i).isEmpty()) {
                         break;
                     }
                     try {
-                        this.ApplyDate = df.parse(row.get(i));
-                    } catch (ParseException e) {
-                        this.setErrorMessage("日期格式不正確. ");
+//                        LocalDateTime local = LocalDateTime.parse(row.get(i));
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//                        String time = formatter.format(local);
+//                        System.out.println(time);
+//                        String day = local.format(formatter);
+//                        LocalDate localDate = LocalDate.parse(this.ApplyDate.format());
+//                        String day = local.format(formatter);
+                        this.ApplyDate = LocalDateTime.parse(row.get(i),formatter);
+                        System.out.println(this.ApplyDate);
+
+                    } catch (Exception e){
+                        this.setErrorMessage("日期格式錯誤");
                     }
                     break;
                 case 5:
@@ -195,7 +354,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
                         this.setErrorMessage("經銷點必須是文字，且不得為空格");
                     }
                     if (this.StoreCode.endsWith(".0")) {
-                        this.StoreCode.substring(0, this.StoreCode.length() - 2);
+                        this.StoreCode = this.StoreCode.substring(0, this.StoreCode.length() - 2);
                     }
                     break;
                 case 7:
@@ -204,21 +363,21 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
                         this.setErrorMessage("經銷點id必須是文字，且不得為空格");
                     }
                     if (this.StoreSite.endsWith(".0")) {
-                        this.StoreSite.substring(0, this.StoreSite.length() - 2);
+                        this.StoreSite = this.StoreSite.substring(0, this.StoreSite.length() - 2);
                     }
                     break;
                 case 10:
-                    this.MaterialCode = row.get(i);
+                    this.ProductID = row.get(i) ;
                     if (row.get(i).isEmpty()) {
                         this.setErrorMessage("預購肥料ID必須是文字，且不得為空格");
                     }
-                    if (this.MaterialCode.endsWith(".0")) {
-                        this.MaterialCode.substring(0, this.MaterialCode.length() - 2);
+                    if (this.ProductID.endsWith(".0")) {
+                        this.ProductID = this.ProductID.substring(0, this.ProductID.length() - 2);
                     }
                     break;
                 case 11:
                     try {
-                        this.Package = Float.valueOf(row.get(i));
+                        this.Package = Float.parseFloat(row.get(i));
                     } catch (NumberFormatException e) {
                         this.setErrorMessage("每包重量必須為數字");
                     }
@@ -234,7 +393,13 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
                         break;
                     }
                     try {
-                        this.OrderTonnes = Float.valueOf(row.get(i));
+                        this.Quantity = Float.parseFloat(row.get(i));
+                        this.Quantity = this.Quantity / (float)1000;
+                        if (this.PickupStatus != null) {
+                            if (this.PickupStatus.trim().equals("已取貨")) {
+                                this.AdjustmentQuantity = this.Quantity;
+                            }
+                        }
                     } catch (NumberFormatException e) {
                         this.setErrorMessage("預購重量必須為數字");
                     }

@@ -21,20 +21,27 @@ public class T001PreOrderPostError {
     }
 
     public void ErrorMessage() throws IOException {
-
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonbHead = new JSONObject();
-        JSONObject jsonbItem = new JSONObject();
+        JSONObject jsonbItem;
         jsonbHead.put("status", 1);
         jsonbHead.put("error", "上傳失敗，請看錯誤訊息");
 
         for (T001SetPreOrderBean t001 : t001s) {
             String NoString = "";
-            if (t001.getNo() != null) {
-                NoString = t001.getNo().toString();
+            String ErrorMsg= "";
+            jsonbItem = new JSONObject();
+
+            if (t001.No != null) {
+                NoString = t001.No;
             }
             jsonbItem.put("No", NoString);
-            jsonbItem.put("ErrorMessage", t001.ErrorMessage);
+
+            if (t001.ErrorMessage != null && !t001.ErrorMessage.isEmpty()){
+                ErrorMsg = t001.ErrorMessage;
+            }
+
+            jsonbItem.put("ErrorMessage", ErrorMsg);
             jsonArray.put(jsonbItem);
         }
         jsonbHead.put("Items", jsonArray);
@@ -53,6 +60,21 @@ public class T001PreOrderPostError {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void postSuccess() throws IOException {
+
+        JSONObject jsonSuccess = new JSONObject();
+        jsonSuccess.put("status", 0);
+        jsonSuccess.put("error", "上傳成功");
+        jsonSuccess.put("Items", "[ ]");
+
+        myResponse.setContentType("text/json; charset=UTF-8");
+        PrintWriter out = myResponse.getWriter();
+        String outString = jsonSuccess.toString();
+        out.println(outString);
+        out.flush();
+        out.close();
     }
 }
 
