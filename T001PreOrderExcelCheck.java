@@ -34,15 +34,13 @@ public class T001PreOrderExcelCheck {
         excelPath = excelPath + myUuid + ".xlsx";
         myResponse = response;
         helper = new ExcelHelper(maxColumnIndex, maxRowIndex, maxSheetIndex, excelPath);
-
-
         helper.openFile();
 
 //        if (row.getCell(0) !=null){
 //            row.getCell(0).setCellType(Cell.CellType)
 //        }
 //
-        String data ="";
+//        String data ="";
 //        if (cell.getCellType()== CellType.STRING){
 //             data.cell.getStringCellValue();
 //        }else if (cell.getCellType()==CellType.NUMERIC){
@@ -204,9 +202,9 @@ public class T001PreOrderExcelCheck {
                 } else if (t001.CustomerNo.isEmpty()) {
                     t001.ErrorMessage += "找不到客戶代碼";
                 } else if (t001.ReceiverPartnerCode.isEmpty()) {
-                    t001.ErrorMessage += "找不到收貨方";
+                    t001.ErrorMessage += "找不到收貨點";
                 } else if (t001.ReceiverPartnerName == null || t001.ReceiverPartnerName.isEmpty()) {
-                    t001.ErrorMessage += "收貨方沒有中文名稱. " + t001.ReceiverPartnerCode;
+                    t001.ErrorMessage += "收貨點沒有中文名稱. " + t001.ReceiverPartnerCode;
                 } else if (cnt_getMaterial != 1) {
                     t001.ErrorMessage += "預購肥料ID非唯一";
                 }

@@ -1,0 +1,20 @@
+public static void main(String args[]) {
+
+	//取得系統日期
+	LocalDate today = LocalDate.now();
+
+	//取得系統時間
+	LocalDateTime now = LocalDateTime.now();
+	
+	//系統日期轉為字串
+	DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	String strToday = today.format(dateFormatter);
+	String strNow = now.format(datetimeFormatter);
+	
+	//字串轉為日期或時間
+	String s1 = "2025/05/07";
+	String s2 = "2025-05-07 10:50:01";
+	LocalDate localDate = LocalDate.parse(s1, dateFormatter);
+	LocalDateTime localTime = LocalDateTime.parse(s2, datetimeFormatter);
+}

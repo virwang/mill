@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.List;
 public class T001SetPreOrderBean implements IExcelHelperBean {
 
     public String No;      //序號
-    public LocalDateTime ApplyDate;   //申請日期
+    public LocalDate ApplyDate;   //申請日期
     public String StoreCode;  //經銷商ID
     public String StoreSite; //經銷點ID
     public String MaterialCode; //預購肥料代碼
@@ -57,7 +58,7 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         this.SourceCode = 0;
     }
 
-    public T001SetPreOrderBean(String no, LocalDateTime applyDate, String storeCode, String storeSite, String materialCode, float aPackage, String pickupStatus, float quantity, String errorMessage, String receiverPartnerCode, String createdBy, Integer inStorePickUpQty, String customerNo, String materialName, String unitCode, String unitName, String remark, String plateNumber, float carTonnes, int preOrderStatusCode, int sourceCode,String productID) {
+    public T001SetPreOrderBean(String no, LocalDate applyDate, String storeCode, String storeSite, String materialCode, float aPackage, String pickupStatus, float quantity, String errorMessage, String receiverPartnerCode, String createdBy, String customerNo, String materialName, String unitCode, String unitName, String remark, String plateNumber, float carTonnes, int preOrderStatusCode, int sourceCode,String productID) {
         this.No = no;
         this.ApplyDate = applyDate;
         this.StoreCode = storeCode;
@@ -162,11 +163,11 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
         No = no;
     }
 
-    public LocalDateTime getApplyDate() {
+    public LocalDate getApplyDate() {
         return ApplyDate;
     }
 
-    public void setApplyDate(LocalDateTime applyDate) {
+    public void setApplyDate(LocalDate applyDate) {
         ApplyDate = applyDate;
     }
 
@@ -328,22 +329,25 @@ public class T001SetPreOrderBean implements IExcelHelperBean {
 //                    str = localDate.format(formatter);
 
 //                    Date date = Date.from();
-
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//                    this.ApplyDate =LocalDateTime.parse(row.get(i)) ;
                     if (row.get(i).isEmpty()) {
+                        this.setErrorMessage("日期不得為空白");
                         break;
                     }
                     try {
 //                        LocalDateTime local = LocalDateTime.parse(row.get(i));
-
+                        String date = row.get(i);
+//                        ZonedDateTime zone = ZonedDateTime.parse(date);
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 //                        String time = formatter.format(local);
 //                        System.out.println(time);
 //                        String day = local.format(formatter);
 //                        LocalDate localDate = LocalDate.parse(this.ApplyDate.format());
 //                        String day = local.format(formatter);
-                        this.ApplyDate = LocalDateTime.parse(row.get(i),formatter);
+                        this.ApplyDate = LocalDate.parse(date,formatter);
+                        System.out.println(date);
                         System.out.println(this.ApplyDate);
-
                     } catch (Exception e){
                         this.setErrorMessage("日期格式錯誤");
                     }

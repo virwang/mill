@@ -23,8 +23,8 @@ public class T001PreOrderMerge {
 //    String str = "yyyy/MM/dd";
 //   LocalDateTime dateTime = LocalDateTime.parse(str,df);
 
-    protected LocalDate localDateTime;
-//    protected SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+   //    protected SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     public String CreatedBy = "";
 
     public T001PreOrderMerge(List<T001SetPreOrderBean> originalData, String createdBy) {
@@ -64,7 +64,7 @@ public class T001PreOrderMerge {
                 pstmtNo.execute();
             }
 
-            //
+
             String insertStatement = "DECLARE @status int" +
                     " EXECUTE @status = sp_ExcuteUploadPreOrder ?" +
                     " SELECT @status AS 'STATUS'";
@@ -94,6 +94,7 @@ public class T001PreOrderMerge {
 //        String notPicked = "尚未取貨";
 
         for (int i = 0; i < originalData.size(); i++) {
+
 //            if (originalData.get(i).getReceiverPartnerCode() == null) {
 //                receiverPartnerCode = defaultReceiverPartnerCode;
 //            } else if (originalData.get(i).getReceiverPartnerCode().isEmpty()) {
@@ -115,10 +116,13 @@ public class T001PreOrderMerge {
 //            } else if (originalData.get(i).getPickupStatus() == notPicked) {
 //                notPicked = originalData.get(i).getPickupStatus();
 //            }
+            LocalDate localDate = originalData.get(i).ApplyDate;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String date =  localDate.format(formatter);
 
             String key = "" +
 //                    dateTime.format(originalData.get(i).getApplyDate()) +
-                    originalData.get(i).getApplyDate()+
+                    date +
                     originalData.get(i).getReceiverPartnerCode() +
                     originalData.get(i).getMaterialCode() +
                     originalData.get(i).getStoreSite() +
@@ -175,7 +179,9 @@ public class T001PreOrderMerge {
     public void GroupByColumnHead() {
         for (Map.Entry entry : sumByAllFiled.entrySet()) {
             T001SetPreOrderBean t001 = (T001SetPreOrderBean) entry.getValue();
-
+          LocalDate localDate = t001.ApplyDate;
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+          String date = localDate.format(formatter);
 //            String defaultReceiverPartnerCode = "0000000000";
 //            String receiverPartnerCode = "";
 //            String storeSite = "";
@@ -199,7 +205,7 @@ public class T001PreOrderMerge {
 
             String keyHeadField =
 //                    sdf.format(t001.ApplyDate) +
-                    t001.ApplyDate+
+                   date+
                     t001.ReceiverPartnerCode
                     + t001.StoreSite;
 
@@ -282,7 +288,13 @@ public class T001PreOrderMerge {
 
                 //start def & insert PreOrder ColumnName
                 PreparedStatement pstmtNo = conn.prepareStatement(sql_insertPreOrder, Statement.RETURN_GENERATED_KEYS);//no
-                pstmtNo.setString(1, String.valueOf(firstBean.ApplyDate)); //1.ApplyDate
+
+                //formatter ApplyDate type to yyyy/MM/dd
+                LocalDate localDate =  firstBean.ApplyDate;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                String date = localDate.format(formatter);
+
+                pstmtNo.setString(1,date); //1.ApplyDate
                 pstmtNo.setString(2, firstBean.CustomerNo);  //2.customerNo
                 pstmtNo.setString(3, firstBean.CustomerName);  //3.customerName
                 pstmtNo.setString(4, firstBean.ReceiverPartnerCode);  //4.receiverPartnerCode
@@ -318,7 +330,6 @@ public class T001PreOrderMerge {
                     pstmtSetInsert.setString(6, bean.MaterialCode);//MaterialCode
                     System.out.println(bean.MaterialCode);
                     pstmtSetInsert.setString(7, this.CreatedBy);// CreatedBy
-//                    pstmtSetInsert.setString(8, bean.Remark);// CreatedBy
                     pstmtSetInsert.execute();
                 }
             }
